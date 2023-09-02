@@ -2,11 +2,9 @@
 """
 Formating data
 """
-
-
 __author__ = 'Vadim Arsenev'
 __version__ = '1.0.0'
-__data__ = '30.08.2023'
+__date__ = '30.08.2023'
 
 
 def change_type(data):

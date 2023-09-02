@@ -8,7 +8,7 @@ import pandas as pd
 
 __author__ = 'Vadim Arsenev'
 __version__ = '1.0.0'
-__data__ = '01.09.2023'
+__date__ = '01.09.2023'
 
 
 def read_data(filename):

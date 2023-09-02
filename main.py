@@ -2,10 +2,7 @@
 """
 Getting price players on gaffr
 """
-import addpath
 from simple_settings import settings
-
-from common_modules.my_remove import remove_file
 
 from functions.teams import calculate
 from functions.files import read_data, read_csv, save_csv
@@ -14,7 +11,7 @@ from functions.format import change_type
 
 __author__ = 'Vadim Arsenev'
 __version__ = '1.0.0'
-__data__ = '01.09.2023'
+__date__ = '01.09.2023'
 
 
 def main():
