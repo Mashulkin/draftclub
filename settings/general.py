@@ -8,4 +8,4 @@ ONLINE_PLAYERS = 'data/fplOnline.csv'
 FANTASY_TEAMS = 'data/fantasyTeams.csv'
 
 ONLINE_TABLE = 'data/draftTable.csv'
-COLUMNS=['manager', 'points', 'not played', 'couch']
+COLUMNS=['manager', 'points', 'not played', 'coach']
