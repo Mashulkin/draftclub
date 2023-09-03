@@ -33,8 +33,9 @@ def calculate(players, teams):
         team_points = players.loc[players['id'].isin(teams[item][0:-2]), 'points'].sum() \
             + coach_points
         sub_points = players.loc[players['id'] == teams[item][-2], 'points'].sum()
-        sub_position = players[players['id'] == teams[item][-2]].iloc[0]['Pos']
+        # sub_position = players[players['id'] == teams[item][-2]].iloc[0]['Pos']
         sub_team = players[players['id'] == teams[item][-2]].iloc[0]['Abbr']
+        sub_team_played = len(players.loc[(players['Abbr'] == sub_team) & (players['st'] > 0)])
         sub_team_finished = len(players.loc[(players['Abbr'] == sub_team) \
                                 & (players['st'] == 1) & (players['min'] == 90)])
 
@@ -57,10 +58,12 @@ def calculate(players, teams):
         
         if players_no_finished == 0:
             sub_points = ''
+        elif sub_team_played == 0:
+            sub_points = '+'
         elif sub_team_finished > 3:
             sub_points = sub_points
         else:
-            sub_points = '+'
+            sub_points = f'{sub_points}*'
         
         bonus = players.loc[players['id'].isin(teams[item][0:-2]), 'bonus'].sum()
 
@@ -71,10 +74,10 @@ def calculate(players, teams):
                 player_team = players[players['id'] == id].iloc[0]['Abbr']
             except IndexError:
                 continue
-            player_played = len(players.loc[(players['Abbr'] == player_team) & (players['st'] > 0)])
+            player_team_played = len(players.loc[(players['Abbr'] == player_team) & (players['st'] > 0)])
             player_team_finished = len(players.loc[(players['Abbr'] == player_team) \
                                     & (players['st'] == 1) & (players['min'] == 90)])
-            if player_played == 0:
+            if player_team_played == 0:
                 count_not_played += 1
             elif player_team_finished > 3:
                 count_finished += 1
