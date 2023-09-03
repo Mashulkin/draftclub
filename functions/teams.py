@@ -8,7 +8,7 @@ from simple_settings import settings
 
 
 __author__ = 'Vadim Arsenev'
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 __date__ = '03.09.2023'
 
 
@@ -23,7 +23,7 @@ def calculate(players, teams):
         coach_finished = len(players.loc[(players['Abbr'] == coach_team) & (players['st'] == 1) \
                                     & (players['min'] == 90)])
         if coach_played == 0:
-            coach_status = f'+{coach_team}'
+            coach_status = f'+ {coach_team}'
         elif coach_finished > 3:
             coach_status = ''
         else:
@@ -64,12 +64,26 @@ def calculate(players, teams):
         
         bonus = players.loc[players['id'].isin(teams[item][0:-2]), 'bonus'].sum()
 
-        count_players_in = len(players.loc[players['id'].isin(teams[item][0:-2]) \
-                    & (players['min'] > 0)])
+        # counting finished, active and remaining players
+        count_not_played, count_in_play, count_finished = [0] * 3       
+        for id in teams[item][1:-2]:
+            try:
+                player_team = players[players['id'] == id].iloc[0]['Abbr']
+            except IndexError:
+                continue
+            player_played = len(players.loc[(players['Abbr'] == player_team) & (players['st'] > 0)])
+            player_team_finished = len(players.loc[(players['Abbr'] == player_team) \
+                                    & (players['st'] == 1) & (players['min'] == 90)])
+            if player_played == 0:
+                count_not_played += 1
+            elif player_team_finished > 3:
+                count_finished += 1
+            else:
+                count_in_play += 1
 
-        df_temp = pd.DataFrame([[teams[item][0], int(team_points), 11-int(count_players_in), \
-                    coach_status, sub_points, bonus]], columns=settings.COLUMNS)
+        df_temp = pd.DataFrame([[teams[item][0], int(team_points), count_finished, count_in_play, \
+                    count_not_played, coach_status, sub_points, bonus]], columns=settings.COLUMNS)
         df = pd.concat([df, df_temp], ignore_index=True)
-    df = df.sort_values(by=['points'], ascending=False)
+    df = df.sort_values(by=['Points'], ascending=False)
     
     return df
